@@ -15,7 +15,7 @@ class CanHTTPRequestHandler(BaseHTTPRequestHandler):
         print(str(self.rfile.read()))
 
 
-    def do_GET():
+    def do_GET(self):
         pass
 
 class AiHttpRequestHandler(BaseHTTPRequestHandler):
