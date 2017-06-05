@@ -11,7 +11,7 @@ class CanHTTPRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     def do_POST(self):
-        self._response("Done")
+        self._response(b"Done")
         print(str(self.rfile.read()))
 
 
