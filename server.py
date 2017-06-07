@@ -1,5 +1,6 @@
 from flask import Flask, request, make_response, jsonify
 from threading import Lock, Thread
+import os
 
 APP = Flask(__name__)
 logger = APP.logger
@@ -74,7 +75,7 @@ def page():
     return make_response(jsonify(res))
 
 if __name__ == '__main__':
-    PORT = 80
+    PORT = os.environ['PORT']
 
     APP.run(
         debug=True,
