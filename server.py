@@ -1,25 +1,19 @@
-from http.server import BaseHTTPRequestHandler
-from http.server import HTTPServer
+from flask import Flask, request, make_response
 
-class CanHTTPRequestHandler(BaseHTTPRequestHandler):
+APP = Flask(__name__)
+logger = APP.logger
 
-    def do_POST(self):
-        if self.path == "/data":
-            self.send_response(200)
-            self.send_header
-        else:
-            self.send_response(404)
+@APP.route("/logs",methods=["POST"])
+def log_response():
+    logger.info(request.data)
+    res = {'Done':True}
+    return make_response(jsonify(res))
 
-    def do_GET(self):
-        pass
+if __name__ == '__main__':
+    PORT = 8080
 
-class AiHttpRequestHandler(BaseHTTPRequestHandler):
-    pass
-
-def run(server_class, handler):
-    address = ('localhost', 8080)
-    server = server_class(address, handler)
-    server.server_forever()
-
-if __name__ == "__main__":
-    run(HTTPServer, CanHTTPRequestHandler)
+    APP.run(
+        debug=True,
+        port=PORT,
+        host='0.0.0.0'
+    )
