@@ -46,8 +46,9 @@ def worker(data):
 
 @APP.route("/logs",methods=["POST"])
 def log_response():
-    logger.info(request.data)
-    thread = Thread(target=worker,args=(request.data))
+    data = str(request.data)
+    logger.info(data)
+    thread = Thread(target=worker,args=(data))
     thread.start()
     thread.run()
 
