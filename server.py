@@ -27,11 +27,11 @@ def worker(data):
     global RANGES
     global mutex
     stat = {
-        'RPM': 0.0,
-        'COOLANT': 0.0,
-        'SPEED': 0.0,
-        'MAF': 0.0,
-        'THROTTLE': 0.0
+        'RPM': [0.0, 0],
+        'COOLANT': [0.0, 0],
+        'SPEED': [0.0, 0],
+        'MAF': [0.0, 0],
+        'THROTTLE': [0.0, 0]
     }
 
     inputs = [x.split(b':') for x in data.split(b'\n')]
