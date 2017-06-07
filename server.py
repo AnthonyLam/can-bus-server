@@ -64,7 +64,7 @@ def api_log():
     elif action == 'maf':
         res['speech'] = "Your average air flow rate was {} grams per second".format(get_avg("MAF"))
     elif action == 'speed':
-        res['speech'] = "Your average speed was {} kilometers per second".format(get_avg("SPEED"))
+        res['speech'] = "Your average speed was {} kilometers per hour".format(get_avg("SPEED"))
 
     return make_response(jsonify(res))
 
