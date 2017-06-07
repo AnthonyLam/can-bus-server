@@ -22,9 +22,9 @@ RANGES = {
 
 mutex = Lock()
 
-def get_avg(data):
+def get_avg(key):
     global STATS
-    return int(data[0]/data[1])
+    return int(STATS[key][0]/STATS[key][1])
 
 @APP.route("/logs",methods=["POST"])
 def log_response():
