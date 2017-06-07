@@ -68,8 +68,13 @@ def api_log():
 
     return make_response(jsonify(res))
 
+@APP.route("/", methods=["GET"])
+def page():
+    res = {"Done":True}
+    return make_response(jsonify(res))
+
 if __name__ == '__main__':
-    PORT = 8080
+    PORT = 80
 
     APP.run(
         debug=True,
