@@ -22,8 +22,8 @@ RANGES = {
 
 mutex = Lock()
 
-def worker(data):
-    return None
+def get_avg(data):
+    return data[0]/data[1]
 
 @APP.route("/logs",methods=["POST"])
 def log_response():
@@ -46,7 +46,23 @@ def log_response():
 @APP.route("/apiai",methods=["POST"])
 def api_log():
     global STATS
-    return make_response(jsonify(STATS))
+
+    req = request.get_json(silent=True,force=True)
+    action = req.get('result').get('action')
+    logger.info(action)
+    res = {
+        'speech': None,
+        'contextOut': req['result']['contexts']
+    }
+
+
+    if action == 'rpm':
+        res['speech'] = "Your average RPM is {} rotations per minute".format(get_avg(STATS['RPM']))
+    if action == 'throttle':
+        res['speech'] = "Your average throttle use was {} percent".format(get_avg(STATS["THROTTLE"]))
+        
+
+    return make_response(jsonify(res))
 
 if __name__ == '__main__':
     PORT = 8080
