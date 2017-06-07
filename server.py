@@ -23,7 +23,7 @@ RANGES = {
 mutex = Lock()
 
 def get_avg(data):
-    return data[0]/data[1]
+    return int(data[0]/data[1])
 
 @APP.route("/logs",methods=["POST"])
 def log_response():
