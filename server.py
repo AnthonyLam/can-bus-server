@@ -34,8 +34,9 @@ def worker(data):
         'THROTTLE': 0.0
     }
 
-    inputs = [x.split(':') for x in data.split('\n')]
+    inputs = [x.split(b':') for x in data.split(b'\n')]
     for param,value in inputs:
+        param = param.decode('utf-8')
         if RANGES[param](float(value)):
             stat[param][0] += float(value)
             stat[param][1] += 1
@@ -46,9 +47,8 @@ def worker(data):
 
 @APP.route("/logs",methods=["POST"])
 def log_response():
-    data = str(request.data)
-    logger.info(data)
-    thread = Thread(target=worker,args=(data))
+    logger.info(request.data)
+    thread = Thread(target=worker,args=(request.data,))
     thread.start()
     thread.run()
 
