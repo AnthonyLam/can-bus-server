@@ -23,35 +23,23 @@ RANGES = {
 mutex = Lock()
 
 def worker(data):
-    global STATS
-    global RANGES
-    global mutex
-    stat = {
-        'RPM': [0.0, 0],
-        'COOLANT': [0.0, 0],
-        'SPEED': [0.0, 0],
-        'MAF': [0.0, 0],
-        'THROTTLE': [0.0, 0]
-    }
-
-    inputs = [x.split(b':') for x in data.split(b'\n')]
-    for param,value in inputs:
-        param = param.decode('utf-8')
-        if RANGES[param](float(value)):
-            stat[param][0] += float(value)
-            stat[param][1] += 1
-
-    mutex.acquire()
-    STATS.update(stat)
-    mutex.release()
+    return None
 
 @APP.route("/logs",methods=["POST"])
 def log_response():
+    global STATS
+    global RANGES
+    global mutex
     logger.info(request.data)
-    thread = Thread(target=worker,args=(request.data,))
-    thread.start()
-    thread.run()
 
+    inputs = [x.split(b':') for x in request.data.split(b'\n')]
+    for param in inputs:
+        param[0] = param[0].decode('utf-8')
+        if len(param[0]) > 2:
+            if RANGES[param[0]](float(param[1])):
+                STATS[param[0]][0] += float(param[1])
+                STATS[param[0]][1] += 1
+    print(STATS)
     res = {'Done':True}
     return make_response(jsonify(res))
 
