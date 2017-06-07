@@ -23,6 +23,7 @@ RANGES = {
 mutex = Lock()
 
 def get_avg(data):
+    global STATS
     return int(data[0]/data[1])
 
 @APP.route("/logs",methods=["POST"])
@@ -45,8 +46,6 @@ def log_response():
 
 @APP.route("/apiai",methods=["POST"])
 def api_log():
-    global STATS
-
     req = request.get_json(silent=True,force=True)
     action = req.get('result').get('action')
     logger.info(action)
@@ -57,10 +56,15 @@ def api_log():
 
 
     if action == 'rpm':
-        res['speech'] = "Your average RPM is {} rotations per minute".format(get_avg(STATS['RPM']))
-    if action == 'throttle':
-        res['speech'] = "Your average throttle use was {} percent".format(get_avg(STATS["THROTTLE"]))
-        
+        res['speech'] = "Your average RPM is {} rotations per minute".format(get_avg('RPM'))
+    elif action == 'throttle':
+        res['speech'] = "Your average throttle use was {} percent".format(get_avg("THROTTLE"))
+    elif action == 'coolant':
+        res['speech'] = "Your coolant was about {} degrees celsius on average".format(get_avg("COOLANT"))    
+    elif action == 'maf':
+        res['speech'] = "Your average air flow rate was {} grams per second".format(get_avg("MAF"))
+    elif action == 'speed':
+        res['speech'] = "Your average speed was {} kilometers per second".format(get_avg("SPEED"))
 
     return make_response(jsonify(res))
 
