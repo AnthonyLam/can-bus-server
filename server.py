@@ -75,7 +75,9 @@ def page():
     return make_response(jsonify(res))
 
 if __name__ == '__main__':
-    PORT = os.environ['PORT']
+    PORT = int(os.environ['PORT'])
+    if not PORT:
+        PORT = 8080
 
     APP.run(
         debug=True,
